@@ -42,6 +42,7 @@ DEFAULT_CENTER_POSITION = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
 pygame.init()
 
+
 class GameObject:
     """Класс, описывающий обекты игры"""
 
@@ -64,6 +65,7 @@ class GameObject:
         rect = pygame.Rect(coordinat, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, body_color, rect)
         pygame.draw.rect(screen, border_color, rect, 1)
+
 
 class Apple(GameObject):
     """Класс, описывающий яблоко в игре"""
@@ -88,16 +90,18 @@ class Apple(GameObject):
         """Отрисовывает яблоко на экране."""
         self.draw_cell(self.position, self.body_color)
 
+
 class Snake(GameObject):
     """Класс змейки."""
+
     def __init__(self, body_color=None):
         """Инициализирует змейку с заданными параметрами."""
         super().__init__(body_color)
         self.length = 1
-        self.positions = [DEFAULT_CENTER_POSITION]  # Начальное положение змейки
+        self.positions = [DEFAULT_CENTER_POSITION]
         self.direction = RIGHT
         self.next_direction = None
-        self.last = None  # Переменная для хранения позиции предыдущего сегмента
+        self.last = None
 
     def draw(self):
         """Отрисовывает змейку на экране."""
@@ -117,7 +121,7 @@ class Snake(GameObject):
         head_x, head_y = self.positions[0]
         new_head_x = (head_x + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH
         new_head_y = (head_y + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
-        self.last = self.positions[-1]  # Запоминаем позицию предыдущего сегмента
+        self.last = self.positions[-1]  # Позиция предыдущей ячейки змеи
         self.positions.insert(0, (new_head_x, new_head_y))
 
         # Удаляем последний элемент, если длина змейки не увеличилась
@@ -156,6 +160,7 @@ class Snake(GameObject):
         """Возвращает позицию головы змейки."""
         return self.positions[0]
 
+
 def handle_keys(snake):
     """Обрабатывает нажатия клавиш."""
     for event in pygame.event.get():
@@ -170,7 +175,6 @@ def handle_keys(snake):
                 snake.change_direction(UP)
             elif event.key == pygame.K_DOWN:
                 snake.change_direction(DOWN)
-    
     # Обновляем направление змейки
     snake.update_direction()
     return True
@@ -200,6 +204,7 @@ def main():
         apple.draw()
         snake.draw()
         pygame.display.update()
+
 
 if __name__ == '__main__':
     main()
