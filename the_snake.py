@@ -18,7 +18,6 @@ from random import randint
 Не судите строго.
 Спасибо, что поиграли в мою игру.
 '''
-
 '''
 Здесь расскажу немного о самом коде.
 Игра написана с применением ООП.
@@ -85,11 +84,8 @@ pg.init()
 
 
 class GameObject:
-
     """Класс, описывающий обекты игры"""
-
     def __init__(self, body_color=None) -> None:
-
         """
         Строка self.position = DEFAULT_CENTER_POSITION
         задаёт начальную позицию обьекта.
@@ -98,24 +94,18 @@ class GameObject:
         = это оператор присваивания. Он устанавливает значение атрибуту.
         DEFAULT_CENTER_POSITION это переменная,
         которая хранит координаты центра игрового поля.
-
         """
-
         self.position = DEFAULT_CENTER_POSITION
         self.body_color = body_color
 
     def draw(self):
-
         """
         Метод отрисовки объектов.
         Он переопределится в наследуемых классах.
 
         """
-
     def draw_cell(self, coordinat, body_color=None, border_color=None):
-
         """Метод для отрисовки одной ячейки"""
-
         if not body_color:
             body_color = self.body_color
         if not border_color:
@@ -127,9 +117,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-
     """Класс, описывающий яблоко в игре"""
-
     def __init__(self, ignored=None, body_color=None) -> None:
         super().__init__(body_color)
         if ignored is None:
@@ -138,13 +126,10 @@ class Apple(GameObject):
         self.randomize_position()
 
     def randomize_position(self):
-
         """
-
         Генерирует случайную позицию для яблока.
         Учитывает занятые клетки(ignored)
         """
-
         while True:
             horizontal = randint(0, GRID_WIDTH - 1) * GRID_SIZE
             vertical = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
@@ -152,26 +137,19 @@ class Apple(GameObject):
             """
             Условие ниже гарантирует, что яблоко не появится
             на занятых клетках.
-
             """
             if self.position not in self.ignored:
                 break
 
     def draw(self):
-
         """Отрисовывает яблоко на экране."""
-
         self.draw_cell(self.position, self.body_color)
 
 
 class Snake(GameObject):
-
     """Класс змейки."""
-
     def __init__(self, body_color=None):
-
         """Инициализирует змейку с заданными параметрами."""
-
         super().__init__(body_color)
         self.length = 1
         self.positions = [DEFAULT_CENTER_POSITION]
@@ -180,32 +158,24 @@ class Snake(GameObject):
         self.last = None
 
     def draw(self):
-
         """Отрисовывает змейку на экране."""
-
         # Отрисовка головы змейки
         self.draw_cell(self.get_head_position(), self.body_color, BORDER_COLOR)
-
         # Отрисовка тела змейки
         for segment in self.positions[1:]:
             self.draw_cell(segment, self.body_color)
-
         # Затирание последнего сегмента
         if self.last:
             self.draw_cell(self.last, BOARD_BACKGROUND_COLOR)
 
     def move(self):
-
         """Перемещает змейку на одну клетку в заданном направлении."""
-
         head_x, head_y = self.get_head_position()
         new_head_x = (head_x + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH
         new_head_y = (head_y + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
         self.last = self.positions[-1]  # Позиция предыдущей ячейки змеи
         self.positions.insert(0, (new_head_x, new_head_y))
-
         # Удаляем последний элемент, если длина змейки не увеличилась
-
         if len(self.positions) > self.length:
             self.positions.pop()
         else:
@@ -213,23 +183,17 @@ class Snake(GameObject):
             self.last = None
 
     def change_direction(self, new_direction):
-
         """Изменяет направление движения змейки."""
-
         self.next_direction = new_direction
 
     def update_direction(self):
-
         """Обновляет направление движения змейки."""
-
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def reset(self):
-
         """Сбрасывает змейку в исходное положение."""
-
         self.positions = [DEFAULT_CENTER_POSITION]
         self.last = None
         self.length = 1
@@ -238,13 +202,10 @@ class Snake(GameObject):
         self.direction = [UP, DOWN, LEFT, RIGHT][randint(0, 3)]
 
     def get_head_position(self):
-
         """Возвращает позицию головы змейки."""
-
         return self.positions[0]
 
     def eat_apple(self, apple):
-
         """ Увеличивает длину змейки и обновляет её позицию
             после поедания яблока.
         """
@@ -272,7 +233,6 @@ def handle_keys(snake):
 
 def main():
     """Метод, описывающий главную логику игры"""
-
     pg.init()
     snake = Snake(body_color=SNAKE_COLOR)
     """
@@ -284,9 +244,7 @@ def main():
     apple = Apple(snake.positions, body_color=APPLE_COLOR)
     apple.draw()
     # Заливаем фон при старте
-
     screen.fill(BOARD_BACKGROUND_COLOR)
-
     while True:
         clock.tick(SPEED)
         # Вызов handle_keys для обработки нажатий клавиш
