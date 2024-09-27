@@ -85,6 +85,7 @@ pg.init()
 
 class GameObject:
     """Класс, описывающий обекты игры"""
+
     def __init__(self, body_color=None) -> None:
         """
         Строка self.position = DEFAULT_CENTER_POSITION
@@ -118,6 +119,7 @@ class GameObject:
 
 class Apple(GameObject):
     """Класс, описывающий яблоко в игре"""
+
     def __init__(self, ignored=None, body_color=None) -> None:
         super().__init__(body_color)
         if ignored is None:
@@ -148,6 +150,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс змейки."""
+
     def __init__(self, body_color=None):
         """Инициализирует змейку с заданными параметрами."""
         super().__init__(body_color)
@@ -206,9 +209,8 @@ class Snake(GameObject):
         return self.positions[0]
 
     def eat_apple(self, apple):
-        """ Увеличивает длину змейки и обновляет её позицию
-            после поедания яблока.
-        """
+        """ Увеличивает длину змейки и обновляет её позицию после поедания яблока."""
+
         self.length += 1
         self.positions = [apple.position] + self.positions
 
