@@ -209,8 +209,9 @@ class Snake(GameObject):
         return self.positions[0]
 
     def eat_apple(self, apple):
-        """ Увеличивает длину змейки и обновляет её позицию после поедания яблока."""
-
+        """Увеличивает длину змейки и 
+        обновляет её позицию после поедания яблока.
+        """
         self.length += 1
         self.positions = [apple.position] + self.positions
 
