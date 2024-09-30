@@ -137,7 +137,6 @@ class GameObject:
 
     def draw_cell(self, coordinat, body_color=None, border_color=None):
         """Метод для отрисовки одной ячейки."""
-
         if not body_color:
             body_color = self.body_color
         if not border_color:
@@ -174,7 +173,7 @@ class Apple(GameObject):
                 break
 
     def draw(self):
-        # Отрисовывает яблоко на экране.
+        """Отрисовывает яблоко на экране."""
         self.draw_cell(self.position, self.body_color)
 
 
@@ -191,6 +190,7 @@ class Snake(GameObject):
         self.last = None
 
     def draw(self):
+        """Отрисовывает змейку, затирает последний сегмент."""
         # Отрисовка головы змейки
         self.draw_cell(self.get_head_position(), self.body_color, BORDER_COLOR)
         # Отрисовка тела змейки
@@ -201,6 +201,7 @@ class Snake(GameObject):
             self.draw_cell(self.last, BOARD_BACKGROUND_COLOR)
 
     def move(self):
+        """Регулирует движение змейки."""
         # Перемещает змейку на одну клетку в заданном направлении.
         head_x, head_y = self.get_head_position()
         # Распаковка направления.
@@ -216,17 +217,18 @@ class Snake(GameObject):
             # Зануляем self.last, если длина змейки не увеличилась.
             self.last = None
 
-    def change_direction(self, new_direction):
-        # Изменяет направление движения змейки.
-        self.next_direction = new_direction
-
     def update_direction(self):
-        # Обновляет направление движения змейки.
+        """Обновляет направление движения змейки."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
+    def change_direction(self, new_direction):
+        """Изменяет направление движения змейки."""
+        self.next_direction = new_direction
+
     def reset(self):
+        """Сбрасывает змейку"""
         # Сбрасывает змейку в исходное положение.
         self.positions = [DEFAULT_CENTER_POSITION]
         self.last = None
@@ -237,7 +239,7 @@ class Snake(GameObject):
         self.direction = [UP, DOWN, LEFT, RIGHT][randint(0, 3)]
 
     def get_head_position(self):
-        # Возвращает позицию головы змейки.
+        """Возвращает позицию головы змейки."""
         return self.positions[0]
 
     def eat_apple(self, apple):
@@ -293,7 +295,6 @@ def handle_keys(snake):
 
 
 def main():
-
     """
     snake.positions - это список координат,
     которые уже заняты змеей.
@@ -301,7 +302,6 @@ def main():
     чтобы яблоко не появилось на змее.
 
     """
-
     # Метод, описывающий главную логику игры.
     pg.init()
     snake = Snake(body_color=SNAKE_COLOR)
