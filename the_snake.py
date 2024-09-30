@@ -1,8 +1,17 @@
+"""
+
+Сокращаем название библиотеки pygame для удобства.
+Импортируем её.
+Импортируем функцию randint из модуля random.
+
+"""
+
 import pygame as pg
 from random import randint
 
 
-'''
+""""
+
 Здравствуйте! Меня зовут Александр.
 Представляю вам свой первый проект на языке программирования Python.
 Я написал для вас игру, классическая 'The snake'.
@@ -19,8 +28,11 @@ from random import randint
 Я ещё только учусь программировнию.
 Не судите строго.
 Спасибо, что поиграли в мою игру.
-'''
-'''
+
+"""
+
+"""
+
 Здесь расскажу немного о самом коде.
 Игра написана с применением ООП.
 Есть основной класс, GameObject.
@@ -42,7 +54,7 @@ Snake инициализирует змейку с новыми праметра
 что бы вам было понятнее.
 Спасибо за внимание!
 
-'''
+"""
 
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
@@ -87,29 +99,34 @@ pg.init()
 
 
 class GameObject:
-    """Класс, описывающий обекты игры"""
+    # Класс, описывающий обекты игры
 
     def __init__(self, body_color=None) -> None:
         """
-        Строка self.position = DEFAULT_CENTER_POSITION
-        задаёт начальную позицию обьекта.
+
+        self.position = DEFAULT_CENTER_POSITION.
+        Эта строка задаёт начальную позицию обьекта.
         self.position это атрибут обьекта,
         который хранит его координаты на игровом поле.
         = это оператор присваивания. Он устанавливает значение атрибуту.
         DEFAULT_CENTER_POSITION это переменная,
         которая хранит координаты центра игрового поля.
+
         """
         self.position = DEFAULT_CENTER_POSITION
         self.body_color = body_color
 
     def draw(self):
+
         """
+
         Метод отрисовки объектов.
         Он переопределится в наследуемых классах.
 
         """
+
     def draw_cell(self, coordinat, body_color=None, border_color=None):
-        """Метод для отрисовки одной ячейки"""
+        # Метод для отрисовки одной ячейки
         if not body_color:
             body_color = self.body_color
         if not border_color:
@@ -121,41 +138,40 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """Класс, описывающий яблоко в игре"""
+    # Класс, описывающий яблоко в игре
 
     def __init__(self, ignored=None, body_color=None) -> None:
         super().__init__(body_color)
         if ignored is None:
             ignored = []
-        self.ignored = ignored
-        self.randomize_position()
+        self.randomize_position(ignored)
 
-    def randomize_position(self):
+    def randomize_position(self, ignored):
         """
+
         Генерирует случайную позицию для яблока.
         Учитывает занятые клетки(ignored)
+
         """
         while True:
             horizontal = randint(0, GRID_WIDTH - 1) * GRID_SIZE
             vertical = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
             self.position = (horizontal, vertical)
-            """
-            Условие ниже гарантирует, что яблоко не появится
-            на занятых клетках.
-            """
-            if self.position not in self.ignored:
+            # Условие ниже гарантирует, что яблоко не появится.
+            # На занятых клетках.
+            if self.position not in ignored:
                 break
 
     def draw(self):
-        """Отрисовывает яблоко на экране."""
+        # Отрисовывает яблоко на экране.
         self.draw_cell(self.position, self.body_color)
 
 
 class Snake(GameObject):
-    """Класс змейки."""
+    # Класс змейки.
 
     def __init__(self, body_color=None):
-        """Инициализирует змейку с заданными параметрами."""
+        # Инициализирует змейку с заданными параметрами.
         super().__init__(body_color)
         self.length = 1
         self.positions = [DEFAULT_CENTER_POSITION]
@@ -164,7 +180,6 @@ class Snake(GameObject):
         self.last = None
 
     def draw(self):
-        """Отрисовывает змейку на экране."""
         # Отрисовка головы змейки
         self.draw_cell(self.get_head_position(), self.body_color, BORDER_COLOR)
         # Отрисовка тела змейки
@@ -175,13 +190,15 @@ class Snake(GameObject):
             self.draw_cell(self.last, BOARD_BACKGROUND_COLOR)
 
     def move(self):
-        """Перемещает змейку на одну клетку в заданном направлении."""
+        # Перемещает змейку на одну клетку в заданном направлении.
         head_x, head_y = self.get_head_position()
-        new_head_x = (head_x + self.direction[0] * GRID_SIZE) % SCREEN_WIDTH
-        new_head_y = (head_y + self.direction[1] * GRID_SIZE) % SCREEN_HEIGHT
-        self.last = self.positions[-1]  # Позиция предыдущей ячейки змеи
+        # Распаковка направления.
+        delta_x, delta_y = self.direction
+        new_head_x = (head_x + delta_x * GRID_SIZE) % SCREEN_WIDTH
+        new_head_y = (head_y + delta_y * GRID_SIZE) % SCREEN_HEIGHT
+        self.last = self.positions[-1]  # Позиция предыдущей ячейки змеи.
         self.positions.insert(0, (new_head_x, new_head_y))
-        # Удаляем последний элемент, если длина змейки не увеличилась
+        # Удаляем последний элемент, если длина змейки не увеличилась.
         if len(self.positions) > self.length:
             self.positions.pop()
         else:
@@ -189,38 +206,65 @@ class Snake(GameObject):
             self.last = None
 
     def change_direction(self, new_direction):
-        """Изменяет направление движения змейки."""
+        # Изменяет направление движения змейки.
         self.next_direction = new_direction
 
     def update_direction(self):
-        """Обновляет направление движения змейки."""
+        # Обновляет направление движения змейки.
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def reset(self):
-        """Сбрасывает змейку в исходное положение."""
+        # Сбрасывает змейку в исходное положение.
         self.positions = [DEFAULT_CENTER_POSITION]
         self.last = None
         self.length = 1
-        self.position = self.positions[0]
-        # Устанавливаем случайное направление змейки
+        # Используем get_head_position
+        self.position = self.get_head_position()
+        # Устанавливаем случайное направление змейки.
         self.direction = [UP, DOWN, LEFT, RIGHT][randint(0, 3)]
 
     def get_head_position(self):
-        """Возвращает позицию головы змейки."""
+        # Возвращает позицию головы змейки.
         return self.positions[0]
 
     def eat_apple(self, apple):
-        """Увеличивает длину змейки и
-        обновляет её позицию после поедания яблока.
+        """
+
+        Увеличивает длину змейки.
+        Обновляет её позицию после поедания яблока.
+
+        self.positions = [apple.position] + self.positions
+        Эта строчка кода добавляет apple.position,
+        (координаты яблока) в начало списка self.positions (позиций змеи).
+        apple.position: Это кортеж (x, y),
+        представляющий координаты яблока на поле.
+        self.positions: Это список кортежей,
+        хранящий координаты всех сегментов змеи.
+        В этом контексте оператор + означает конкатенацию списков.
+        Он создает новый список, объединяющий два исходных списка.
+        [apple.position]: Здесь создается новый список,
+        содержащий только один элемент - apple.position.
+        Это делается для того,
+        чтобы мы могли использовать оператор + для конкатенации списков.
+        Почему именно так я сделал?
+        Простая логика: Это простой и прямой способ
+        обновить self.positions после поедания яблока.
+        Мы просто вставляем позицию яблока в начало списка,
+        что делает яблоко “головой” змеи.
+        Эффективность: Конкатенация списков -
+        относительно эффективная операция,
+        поэтому это хорошее решение.
+        С точки зрения производительности.
+
         """
         self.length += 1
         self.positions = [apple.position] + self.positions
 
 
 def handle_keys(snake):
-    """Обрабатывает нажатия клавиш."""
+    # Обрабатывает нажатия клавиш.
     for event in pg.event.get():
         if event.type == pg.QUIT:
             return False
@@ -233,20 +277,23 @@ def handle_keys(snake):
                 snake.change_direction(UP)
             elif event.key == pg.K_DOWN:
                 snake.change_direction(DOWN)
-        # Обновляем направление змейки
+    # Обновляем направление змейки
     return True
 
 
 def main():
-    """Метод, описывающий главную логику игры"""
-    pg.init()
-    snake = Snake(body_color=SNAKE_COLOR)
+
     """
     snake.positions - это список координат,
     которые уже заняты змеей.
     Эти координаты передаются в Apple.__init__ как ignored,
     чтобы яблоко не появилось на змее.
+
     """
+
+    # Метод, описывающий главную логику игры.
+    pg.init()
+    snake = Snake(body_color=SNAKE_COLOR)
     apple = Apple(snake.positions, body_color=APPLE_COLOR)
     apple.draw()
     # Заливаем фон при старте
@@ -260,13 +307,15 @@ def main():
         snake.move()
         if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-        # Перемещаем яблоко после сброса змейки
-            apple.randomize_position()
-        # Заливаем фон при сбросе
+            # Передаём ignored в randomize_position
+            # Перемещаем яблоко после сброса змейки
+            apple.randomize_position(snake.positions)
+            # Заливаем фон при сбросе
             screen.fill(BOARD_BACKGROUND_COLOR)
         elif snake.get_head_position() == apple.position:
             snake.eat_apple(apple)
-            apple.randomize_position()
+            # Передаём ignored в randomize_position
+            apple.randomize_position(snake.positions)
         apple.draw()
         snake.draw()
         pg.display.update()
