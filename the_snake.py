@@ -99,7 +99,18 @@ pg.init()
 
 
 class GameObject:
-    # Класс, описывающий обекты игры
+    """
+
+    Класс, описывающий обекты игры.
+    self.position = DEFAULT_CENTER_POSITION.
+    Эта строка задаёт начальную позицию обьекта.
+    self.position это атрибут обьекта,
+    который хранит его координаты на игровом поле.
+    = это оператор присваивания. Он устанавливает значение атрибуту.
+    DEFAULT_CENTER_POSITION это переменная,
+    которая хранит координаты центра игрового поля.
+
+    """
 
     def __init__(self, body_color=None) -> None:
         """
@@ -117,7 +128,6 @@ class GameObject:
         self.body_color = body_color
 
     def draw(self):
-
         """
 
         Метод отрисовки объектов.
@@ -126,7 +136,8 @@ class GameObject:
         """
 
     def draw_cell(self, coordinat, body_color=None, border_color=None):
-        # Метод для отрисовки одной ячейки
+        """Метод для отрисовки одной ячейки."""
+
         if not body_color:
             body_color = self.body_color
         if not border_color:
@@ -138,7 +149,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-    # Класс, описывающий яблоко в игре
+    """Класс, описывающий яблоко в игре."""
 
     def __init__(self, ignored=None, body_color=None) -> None:
         super().__init__(body_color)
@@ -168,7 +179,7 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    # Класс змейки.
+    """Класс змейки."""
 
     def __init__(self, body_color=None):
         # Инициализирует змейку с заданными параметрами.
@@ -264,7 +275,7 @@ class Snake(GameObject):
 
 
 def handle_keys(snake):
-    # Обрабатывает нажатия клавиш.
+    """Обрабатывает нажатия клавиш."""
     for event in pg.event.get():
         if event.type == pg.QUIT:
             return False
