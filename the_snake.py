@@ -1,4 +1,4 @@
-""""
+"""
 Здравствуйте! Меня зовут Александр.
 
 Представляю вам свой первый проект на языке программирования Python.
@@ -133,7 +133,7 @@ class Apple(GameObject):
     """Класс, описывающий яблоко в игре."""
 
     def __init__(self, ignored=None, body_color=None) -> None:
-        """"
+        """
         Вызываем конструктор родительского класса.
 
         В качаестве аргумента передаём body_color.
@@ -144,6 +144,10 @@ class Apple(GameObject):
         if ignored is None:
             ignored = []
         self.randomize_position(ignored)
+
+    def draw(self):
+        """Отрисовывает яблоко на экране."""
+        self.draw_cell(self.position, self.body_color)
 
     def randomize_position(self, ignored):
         """
@@ -162,10 +166,6 @@ class Apple(GameObject):
             """
             if self.position not in ignored:
                 break
-
-    def draw(self):
-        """Отрисовывает яблоко на экране."""
-        self.draw_cell(self.position, self.body_color)
 
 
 class Snake(GameObject):
